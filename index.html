@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Animedoro Timer</title>
+
+        <link rel="stylesheet" href="./app.css">
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=fredoka:400,500" rel="stylesheet" />
+        
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script>
+            tailwind.config = {
+              theme: {
+                fontFamily: {
+                    sans: ['Fredoka', 'sans-serif'],
+                },
+                extend: {
+                  colors: {
+                    antiflash: '#F0F0F0',
+                    delftblue: '#213555',
+                    trueblue: '#4F709C',
+                    flax: '#E5D283',
+                  }
+                }
+              }
+            }
+          </script>
+    </head>
+    <body
+    x-data="{
+        currentTheme: 0,
+        themes: [
+            {
+                title: 'anime',
+                background: 'bg-antiflash',
+                primary: 'bg-delftblue',
+                secondary: '',
+            },
+            { 
+                title: 'Naruto',
+                mc: 'Naruto',
+                background: 'bg-blue-300',
+                primary: 'bg-yellow-300',
+                secondary: 'orange-500',
+            },
+            {
+                title: 'Shingeki no kyojin',
+                mc: 'Eren Jeager',
+                background: 'bg-orange-100',
+                primary: 'bg-green-900',
+                secondary: 'yellow-800',
+            },
+            {
+                title: 'Hunter X Hunter',
+                mc: 'Gon',
+                background: 'bg-yellow-50',
+                primary: 'bg-green-700',
+                secondary: 'green-600',
+            },
+        ],
+        isLeftArrow() {
+            console.log('left')
+            console.log(this.themes)
+            if (this.currentTheme == 0) {
+                this.currentTheme = this.themes.length - 1;
+            } else {
+                this.currentTheme -= 1;
+            }
+            console.log(this.currentTheme)
+        },
+        isRightArrow() {
+            console.log('right')
+            console.log(this.themes)
+            if (this.currentTheme == this.themes.length - 1) {
+                this.currentTheme = 0;
+            } else {
+                this.currentTheme += 1;
+            }
+            console.log(this.currentTheme)
+            console.log(this.themes[this.currentTheme].title)
+        }
+    }"
+    x-on:keydown.window="
+        if ($event.code == 'ArrowRight') {
+            isRightArrow();
+        } else if ($event.code == 'ArrowLeft') {
+            isLeftArrow();
+        }
+    "
+    :class="themes[currentTheme].background"
+    class="bg-antiflash flex items-center justify-center min-h-screen transition-all duration-500">
+        <div 
+            x-data="{
+                studyingTime: 3,
+                animeTime: 4,
+                remainingTime: 3,
+
+                studySessions: 0,
+                animeEpisodes: 0,
+
+                isRunning: false,
+                isStudying: true,
+                intervalId: null,
+
+                init() {
+                    this.$watch('studyingTime', (value) => {
+                        if (value <= 0) {
+                            this.switchToAnime();
+                        }
+                    });
+                    this.$watch('animeTime', (value) => {
+                        if (value <= 0) {
+                            this.switchToStudy();
+                        }
+                    });
+                },
+
+                formatTime() {
+                    const currentInterval = this.remainingTime;
+                    const minutes = Math.floor(currentInterval / 60);
+                    const seconds = currentInterval % 60;
+                    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                },
+
+                startTimer() {
+                    this.isRunning = true;
+                    this.intervalId = setInterval(() => {
+                        if (this.isStudying) {
+                            if (this.remainingTime > 0) {
+                                this.remainingTime--;
+                            } else {
+                                this.switchToAnime();
+                            }
+                        } else {
+                            if (this.remainingTime > 0) {
+                                this.remainingTime--;
+                            } else {
+                                this.switchToStudy();
+                            }
+                        }
+                    }, 1000);
+                },
+
+                stopTimer() {
+                    this.isRunning = false;
+                    clearInterval(this.intervalId);
+                },
+
+                resetTimer() {
+                    this.isRunning = false;
+                    clearInterval(this.intervalId);
+                    this.remainingTime = this.isStudying ? this.studyingTime : this.animeTime;
+                },
+
+                switchToAnime() {
+                    this.isStudying = false;
+                    this.remainingTime = this.animeTime;
+                    this.studySessions += 1;
+                },
+
+                switchToStudy() {
+                    this.isStudying = true;
+                    this.remainingTime = this.studyingTime;
+                    this.animeEpisodes += 1;
+                },
+            }"
+            x-init="init()"
+            class="flex flex-col gap-6 w-full items-center justify-center"
+        >
+            <h1 class="text-delftblue text-5xl font-bold">Animedoro Timer</h1>
+            <p class="text-delftblue text-2xl">It's <span x-text="isStudying ? 'studying' : themes[currentTheme].title"></span> time</p>
+            <div class="flex gap-8 text-delftblue">
+                <div class="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notebook" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18"></path><path d="M13 8l2 0"></path><path d="M13 12l2 0"></path></svg>
+                    <span x-text="studySessions"></span></div>
+                    <div class="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-tv" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path><path d="M16 3l-4 4l-4 -4"></path></svg>
+                    <span x-text="animeEpisodes"></span></div>
+            </div>
+            <div :class="themes[currentTheme].primary" class="rounded-full aspect-square w-1/5 gap-8 flex flex-col items-center justify-center transition-all duration-300">
+                <div class="flex flex-col items-center justify-center gap-2">
+                    <h2 x-text="formatTime" class="text-antiflash text-7xl"></h2>
+                    <p class="text-antiflash text-center text-lg">...to watch <span x-text="themes[currentTheme].title"></span></p>
+                </div>
+                <div class="flex justify-between gap-4">
+                    <button
+                        x-show="!isRunning"
+                        x-on:click="isRunning = !isRunning; startTimer()"
+                        class="bg-trueblue text-antiflash text-xl px-6 py-2 rounded-full flex justify-between items-center gap-2"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-play" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M7 4v16l13 -8z"></path></svg>
+                    </button>
+                    <button
+                        x-show="isRunning"
+                        x-on:click="isRunning = !isRunning; stopTimer()"
+                        class="bg-trueblue text-antiflash text-xl px-6 py-2 rounded-full flex justify-between items-center gap-2"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-stop" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 5m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"></path></svg>
+                    </button>
+                    <button
+                        x-on:click="resetTimer()"
+                        class="bg-trueblue text-antiflash text-xl px-6 py-2 rounded-full flex justify-between items-center gap-2"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path></svg>   
+                    </button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+    
+
+
+<!-- 
+<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notebook" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+   <path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18"></path>
+   <path d="M13 8l2 0"></path>
+   <path d="M13 12l2 0"></path>
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-tv" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+   <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+   <path d="M16 3l-4 4l-4 -4"></path>
+</svg>
+-->
