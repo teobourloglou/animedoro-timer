@@ -8,7 +8,7 @@
 
         <link rel="stylesheet" href="./app.css">
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=fredoka:400,500" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=fredoka:400,500|gaegu:400" rel="stylesheet" />
         
         <script src="https://cdn.tailwindcss.com"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -17,6 +17,7 @@
               theme: {
                 fontFamily: {
                     sans: ['Fredoka', 'sans-serif'],
+                    serif: ['Gaegu', 'serif']
                 },
                 extend: {
                   colors: {
@@ -38,28 +39,61 @@
                 title: 'anime',
                 background: 'bg-antiflash',
                 primary: 'bg-delftblue',
-                secondary: '',
+                secondary: 'bg-trueblue',
+                buttonBackground: 'bg-trueblue',
+                outsideText: 'text-delftblue',
+                insideText: 'text-antiflash',
+                buttonText: 'text-antiflash',
+                cursor: '',
+                image: 'https://cdn.custom-cursor.com/db/11974/ghibli-spirited-away-no-face-cursor.png'
             },
             { 
                 title: 'Naruto',
-                mc: 'Naruto',
-                background: 'bg-blue-300',
-                primary: 'bg-yellow-300',
-                secondary: 'orange-500',
+                background: 'bg-orange-400',
+                primary: 'bg-yellow-500',
+                secondary: 'bg-neutral-800',
+                buttonBackground: 'bg-neutral-800',
+                outsideText: 'text-neutral-800',
+                insideText: 'text-neutral-800',
+                buttonText: 'text-white',
+                cursor: 'https://cdn.custom-cursor.com/db/cursor/32/Naruto_Sakura_HarunoKunaiShurikenCursor.png',
+                image: 'https://cdn.custom-cursor.com/db/6669/naruto-itachi-uchiha-and-crow-pointer.png'
             },
             {
-                title: 'Shingeki no kyojin',
-                mc: 'Eren Jeager',
-                background: 'bg-orange-100',
-                primary: 'bg-green-900',
-                secondary: 'yellow-800',
+                title: 'Attack on Titan',
+                background: 'bg-orange-300',
+                primary: 'bg-red-700',
+                secondary: 'bg-yellow-700',
+                buttonBackground: 'bg-red-500',
+                outsideText: 'text-neutral-800',
+                insideText: 'text-orange-100',
+                buttonText: 'text-orange-100',
+                cursor: 'https://cdn.custom-cursor.com/db/10352/32/anime-attack-on-titan-reiner-braun-and-sword-cursor.png',
+                image: 'https://cdn.custom-cursor.com/db/4803/arrow2735.png'
             },
             {
                 title: 'Hunter X Hunter',
-                mc: 'Gon',
                 background: 'bg-yellow-50',
                 primary: 'bg-green-700',
-                secondary: 'green-600',
+                secondary: 'bg-green-950',
+                buttonBackground: 'bg-green-600',
+                outsideText: 'text-green-950',
+                insideText: 'text-green-50',
+                buttonText: 'text-green-50',
+                cursor: 'https://cdn.custom-cursor.com/db/4606/32/arrow2637.png',
+                image: 'https://cdn.custom-cursor.com/db/3991/arrow2333.png'
+            },
+            {
+                title: 'Seven Deadly Sins',
+                background: 'bg-purple-950',
+                primary: 'bg-purple-700',
+                secondary: 'bg-yellow-300',
+                buttonBackground: 'bg-purple-500',
+                outsideText: 'text-yellow-300',
+                insideText: 'text-yellow-200',
+                buttonText: 'text-yellow-200',
+                cursor: 'https://cdn.custom-cursor.com/db/cursor/32/seven_deadly_sins_meliodas_lostvayne_cursor.png',
+                image: 'https://cdn.custom-cursor.com/db/pointer/32/seven_deadly_sins_meliodas_lostvayne_pointer.png'
             },
         ],
         isLeftArrow() {
@@ -92,6 +126,7 @@
         }
     "
     :class="themes[currentTheme].background"
+    :style="`cursor: url(${themes[currentTheme].cursor}) , default !important;`"
     class="bg-antiflash flex items-center justify-center min-h-screen transition-all duration-500">
         <div 
             x-data="{
@@ -104,6 +139,7 @@
 
                 isRunning: false,
                 isStudying: true,
+                autostart: true,
                 intervalId: null,
 
                 init() {
@@ -156,24 +192,89 @@
                     this.remainingTime = this.isStudying ? this.studyingTime : this.animeTime;
                 },
 
+                skipTimer() {
+                    this.remainingTime = 0;
+                },
+
+                checkAutostart() {
+                    !this.autostart ? this.stopTimer() : '';
+                },
+
                 switchToAnime() {
                     this.isStudying = false;
                     this.remainingTime = this.animeTime;
                     this.studySessions += 1;
+                    this.checkAutostart();
                 },
 
                 switchToStudy() {
                     this.isStudying = true;
                     this.remainingTime = this.studyingTime;
                     this.animeEpisodes += 1;
+                    this.checkAutostart();
                 },
             }"
             x-init="init()"
             class="flex flex-col gap-6 w-full items-center justify-center"
         >
-            <h1 class="text-delftblue text-5xl font-bold">Animedoro Timer</h1>
-            <p class="text-delftblue text-2xl">It's <span x-text="isStudying ? 'studying' : themes[currentTheme].title"></span> time</p>
-            <div class="flex gap-8 text-delftblue">
+            <img :src="themes[currentTheme].image" class="h-20 pl-4"/>
+            <h1 :class="themes[currentTheme].outsideText" class="text-5xl font-bold">Animedoro Timer</h1>
+            <div :class="themes[currentTheme].secondary" class="rounded-full aspect-square w-1/5 p-2 bg-trueblue">
+                <div :class="themes[currentTheme].primary" class="rounded-full aspect-square gap-8 flex flex-col items-center justify-center transition-all duration-300">
+                    <div class="flex flex-col items-center justify-center gap-2">
+                        <h2 x-text="formatTime" :class="themes[currentTheme].insideText" class="text-7xl"></h2>
+                        <p x-show="isStudying" :class="themes[currentTheme].insideText" class="text-center text-lg">...to watch <span x-text="themes[currentTheme].title"></span></p>
+                        <p x-show="!isStudying" :class="themes[currentTheme].insideText" class="text-center text-lg">...to study</p>
+                    </div>
+                    <div class="flex justify-between gap-4"
+                    >
+                        <button
+                            x-show="!isRunning"
+                            x-on:click="isRunning = !isRunning; startTimer()"
+                            :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`"
+                            class="text-xl px-2 py-2 rounded-full flex justify-between items-center gap-2"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-play" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M7 4v16l13 -8z"></path></svg>
+                        </button>
+                        <button
+                            x-show="isRunning"
+                            x-on:click="isRunning = !isRunning; stopTimer()"
+                            :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`"
+                            class="text-xl px-2 py-2 rounded-full flex justify-between items-center gap-2"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-stop" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 5m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"></path></svg>
+                        </button>
+                        <button
+                            x-on:click="resetTimer()"
+                            :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`"
+                            class="text-xl px-2 py-2 rounded-full flex justify-between items-center gap-2"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path></svg>   
+                        </button>
+                        <button
+                            x-on:click="skipTimer()"
+                            :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`"
+                            class="text-xl px-2 py-2 rounded-full flex justify-between items-center gap-2"
+                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-skip-forward" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 5v14l12 -7z"></path><path d="M20 5l0 14"></path></svg>
+                        </button>
+                    </div>
+                    <div class="flex flex-col justify-center items-center gap-1">
+                        <p :class="themes[currentTheme].insideText">Autostart:</p>
+                        <label class="flex items-center cursor-pointer gap-3">
+                            <span :class="themes[currentTheme].insideText" class="text-sm">Off</span>
+                            <div class="relative">
+                                <input type="checkbox" x-model="autostart" class="hidden" />
+                                <div :class="themes[currentTheme].secondary" class="w-8 h-4 rounded-full"></div>
+                                <div :class="themes[currentTheme].background" class="absolute w-5 h-5 rounded-full -left-0.5 -top-0.5 transition-transform transform duration-200" :class="{ 'translate-x-4': autostart }"></div>
+                            </div>
+                            <span :class="themes[currentTheme].insideText" class="text-sm">On</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <p :class="themes[currentTheme].outsideText" class="text-2xl">It's <span x-text="isStudying ? 'studying' : themes[currentTheme].title"></span> time</p>
+            <div class="flex gap-8" :class="themes[currentTheme].outsideText">
                 <div class="flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notebook" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18"></path><path d="M13 8l2 0"></path><path d="M13 12l2 0"></path></svg>
                     <span x-text="studySessions"></span></div>
@@ -181,51 +282,9 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-tv" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path><path d="M16 3l-4 4l-4 -4"></path></svg>
                     <span x-text="animeEpisodes"></span></div>
             </div>
-            <div :class="themes[currentTheme].primary" class="rounded-full aspect-square w-1/5 gap-8 flex flex-col items-center justify-center transition-all duration-300">
-                <div class="flex flex-col items-center justify-center gap-2">
-                    <h2 x-text="formatTime" class="text-antiflash text-7xl"></h2>
-                    <p class="text-antiflash text-center text-lg">...to watch <span x-text="themes[currentTheme].title"></span></p>
-                </div>
-                <div class="flex justify-between gap-4">
-                    <button
-                        x-show="!isRunning"
-                        x-on:click="isRunning = !isRunning; startTimer()"
-                        class="bg-trueblue text-antiflash text-xl px-6 py-2 rounded-full flex justify-between items-center gap-2"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-play" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M7 4v16l13 -8z"></path></svg>
-                    </button>
-                    <button
-                        x-show="isRunning"
-                        x-on:click="isRunning = !isRunning; stopTimer()"
-                        class="bg-trueblue text-antiflash text-xl px-6 py-2 rounded-full flex justify-between items-center gap-2"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-stop" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 5m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"></path></svg>
-                    </button>
-                    <button
-                        x-on:click="resetTimer()"
-                        class="bg-trueblue text-antiflash text-xl px-6 py-2 rounded-full flex justify-between items-center gap-2"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path></svg>   
-                    </button>
-                </div>
-            </div>
         </div>
+        <p class="static md:absolute bottom-2 left-2" :class="themes[currentTheme].outsideText">⌨️ built by <a href="https://github.com/teobourloglou" target="_blank" class="font-bold">@teobourloglou</a></p>
+        <span :class="themes[currentTheme].outsideText" class="absolute top-1/2 left-2 font-serif">(←) Press left arrow<br>key to change theme</span>
+        <span :class="themes[currentTheme].outsideText" class="absolute top-1/2 right-2 font-serif">Press right arrow (→)<br>key to change theme</span>
     </body>
 </html>
-    
-
-
-<!-- 
-<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notebook" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-   <path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18"></path>
-   <path d="M13 8l2 0"></path>
-   <path d="M13 12l2 0"></path>
-</svg>
-
-<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-tv" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-   <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
-   <path d="M16 3l-4 4l-4 -4"></path>
-</svg>
--->
