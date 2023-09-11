@@ -80,8 +80,21 @@
                 outsideText: 'text-green-950',
                 insideText: 'text-green-50',
                 buttonText: 'text-green-50',
-                cursor: 'https://cdn.custom-cursor.com/db/4606/32/arrow2637.png',
+                cursor: 'https://cdn.custom-cursor.com/db/3992/32/arrow2333.png',
                 image: 'https://cdn.custom-cursor.com/db/3991/arrow2333.png'
+            },
+            {
+                title: 'Death Note',
+                background: 'bg-neutral-950',
+                primary: 'bg-neutral-900',
+                secondary: 'bg-stone-800',
+                buttonBackground: 'bg-neutral-700',
+                outsideText: 'text-neutral-50',
+                insideText: 'text-neutral-100',
+                buttonText: 'text-neutral-100',
+                cursor: 'https://cdn.custom-cursor.com/db/6034/32/anime-death-note-light-yagami-and-death-note-cursor.png',
+                image: 'https://cdn.custom-cursor.com/db/6033/anime-death-note-light-yagami-and-death-note-pointer.png'
+
             },
             {
                 title: 'Seven Deadly Sins',
@@ -95,28 +108,94 @@
                 cursor: 'https://cdn.custom-cursor.com/db/cursor/32/seven_deadly_sins_meliodas_lostvayne_cursor.png',
                 image: 'https://cdn.custom-cursor.com/db/pointer/32/seven_deadly_sins_meliodas_lostvayne_pointer.png'
             },
+            {
+                title: 'Bleach',
+                background: 'bg-neutral-950',
+                primary: 'bg-neutral-100',
+                secondary: 'bg-red-800',
+                buttonBackground: 'bg-neutral-400',
+                outsideText: 'text-neutral-100',
+                insideText: 'text-neutral-950',
+                buttonText: 'text-neutral-950',
+                cursor: 'https://cdn.custom-cursor.com/db/14944/32/anime-bleach-ichigo-kurosaki-and-shikai-cursor.png',
+                image: 'https://cdn.custom-cursor.com/db/14943/anime-bleach-ichigo-kurosaki-and-shikai-pointer.png'
+
+            },
+            {
+                title: 'Tokyo Revengers',
+                background: 'bg-red-600',
+                primary: 'bg-neutral-950',
+                secondary: 'bg-red-900',
+                buttonBackground: 'bg-neutral-800',
+                outsideText: 'text-neutral-950',
+                insideText: 'text-neutral-50',
+                buttonText: 'text-neutral-50',
+                cursor: 'https://cdn.custom-cursor.com/db/10914/32/anime-tokyo-revengers-manjiro-sano-and-taiyaki-cursor.png',
+                image: 'https://cdn.custom-cursor.com/db/10913/anime-tokyo-revengers-manjiro-sano-and-taiyaki-pointer.png'
+
+            },
+            {
+                title: 'Fullmetal Alchemist',
+                background: 'bg-neutral-800',
+                primary: 'bg-slate-700',
+                secondary: 'bg-slate-900',
+                buttonBackground: 'bg-slate-600',
+                outsideText: 'text-slate-300',
+                insideText: 'text-slate-300',
+                buttonText: 'text-slate-300',
+                cursor: 'https://cdn.custom-cursor.com/db/4460/32/arrow2565.png',
+                image: 'https://cdn.custom-cursor.com/db/4459/arrow2565.png'
+
+            },
+            {
+                title: 'One Piece',
+                background: 'bg-sky-400',
+                primary: 'bg-blue-600',
+                secondary: 'bg-sky-600',
+                buttonBackground: 'bg-blue-500',
+                outsideText: 'text-sky-50',
+                insideText: 'text-sky-50',
+                buttonText: 'text-sky-50',
+                cursor: 'https://cdn.custom-cursor.com/db/cursor/32/One_Piece_MonkeyDLuffyCursor.png',
+                image: 'https://cdn.custom-cursor.com/db/pointer/32/One_Piece_MonkeyDLuffyPointer.png'
+
+            },
+            {
+                title: 'Jojo\'s Bizzare Adventures',
+                background: 'bg-blue-950',
+                primary: 'bg-indigo-800',
+                secondary: 'bg-indigo-900',
+                buttonBackground: 'bg-indigo-500',
+                outsideText: 'text-pink-500',
+                insideText: 'text-pink-500',
+                buttonText: 'text-pink-500',
+                cursor: 'https://cdn.custom-cursor.com/db/5732/32/jojo-bizzare-adventure-joseph-joestar-and-clacker-volley-cursor.png',
+                image: 'https://cdn.custom-cursor.com/db/5731/jojo-bizzare-adventure-joseph-joestar-and-clacker-volley-pointer.png'
+
+            },
         ],
         isLeftArrow() {
-            console.log('left')
-            console.log(this.themes)
             if (this.currentTheme == 0) {
                 this.currentTheme = this.themes.length - 1;
             } else {
                 this.currentTheme -= 1;
             }
-            console.log(this.currentTheme)
         },
         isRightArrow() {
-            console.log('right')
-            console.log(this.themes)
             if (this.currentTheme == this.themes.length - 1) {
                 this.currentTheme = 0;
             } else {
                 this.currentTheme += 1;
             }
-            console.log(this.currentTheme)
-            console.log(this.themes[this.currentTheme].title)
+        },
+        mobileThemeChange() {
+            if (this.currentTheme == this.themes.length - 1) {
+                this.currentTheme = 0;
+            } else {
+                this.currentTheme += 1;
+            }
         }
+
     }"
     x-on:keydown.window="
         if ($event.code == 'ArrowRight') {
@@ -127,12 +206,12 @@
     "
     :class="themes[currentTheme].background"
     :style="`cursor: url(${themes[currentTheme].cursor}) , default !important;`"
-    class="bg-antiflash flex items-center justify-center min-h-screen transition-all duration-500">
+    class="bg-antiflash flex flex-col md:flex-row items-center justify-center min-h-screen transition-all duration-500">
         <div 
             x-data="{
-                studyingTime: 3,
-                animeTime: 4,
-                remainingTime: 3,
+                studyingTime: 2400,
+                animeTime: 1200,
+                remainingTime: 2400,
 
                 studySessions: 0,
                 animeEpisodes: 0,
@@ -218,9 +297,9 @@
             class="flex flex-col gap-6 w-full items-center justify-center"
         >
             <img :src="themes[currentTheme].image" class="h-20 pl-4"/>
-            <h1 :class="themes[currentTheme].outsideText" class="text-5xl font-bold">Animedoro Timer</h1>
-            <div :class="themes[currentTheme].secondary" class="rounded-full aspect-square w-1/5 p-2 bg-trueblue">
-                <div :class="themes[currentTheme].primary" class="rounded-full aspect-square gap-8 flex flex-col items-center justify-center transition-all duration-300">
+            <h1 :class="themes[currentTheme].outsideText" class="text-4xl md:text-5xl font-bold">Animedoro Timer</h1>
+            <div :class="themes[currentTheme].secondary" class="rounded-full aspect-square w-[90%] sm:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5 p-2 bg-trueblue">
+                <div :class="themes[currentTheme].primary" class="rounded-full aspect-square gap-4 md:gap-8 flex flex-col items-center justify-center transition-all duration-300">
                     <div class="flex flex-col items-center justify-center gap-2">
                         <h2 x-text="formatTime" :class="themes[currentTheme].insideText" class="text-7xl"></h2>
                         <p x-show="isStudying" :class="themes[currentTheme].insideText" class="text-center text-lg">...to watch <span x-text="themes[currentTheme].title"></span></p>
@@ -266,7 +345,7 @@
                             <div class="relative">
                                 <input type="checkbox" x-model="autostart" class="hidden" />
                                 <div :class="themes[currentTheme].secondary" class="w-8 h-4 rounded-full"></div>
-                                <div :class="themes[currentTheme].background" class="absolute w-5 h-5 rounded-full -left-0.5 -top-0.5 transition-transform transform duration-200" :class="{ 'translate-x-4': autostart }"></div>
+                                <div :class="`${themes[currentTheme].background} ${autostart ? 'translate-x-4' : ''}`" class="absolute w-5 bg-white h-5 rounded-full -left-0.5 -top-0.5 transition-transform transform duration-200"></div>
                             </div>
                             <span :class="themes[currentTheme].insideText" class="text-sm">On</span>
                         </label>
@@ -282,9 +361,13 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-tv" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path><path d="M16 3l-4 4l-4 -4"></path></svg>
                     <span x-text="animeEpisodes"></span></div>
             </div>
+            <button x-on:click="mobileThemeChange()" :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`" class="lg:hidden flex gap-1 items-center px-4 py-2 rounded-full">
+                Change theme
+                <img :src="themes[currentTheme].cursor ? themes[currentTheme].cursor : 'https://cdn.custom-cursor.com/db/12052/32/ghibli-spirited-away-haku-and-haku-as-a-dragon-cursor.png'" class="w-8 h-8"/>
+            </button>
         </div>
-        <p class="static md:absolute bottom-2 left-2" :class="themes[currentTheme].outsideText">⌨️ built by <a href="https://github.com/teobourloglou" target="_blank" class="font-bold">@teobourloglou</a></p>
-        <span :class="themes[currentTheme].outsideText" class="absolute top-1/2 left-2 font-serif">(←) Press left arrow<br>key to change theme</span>
-        <span :class="themes[currentTheme].outsideText" class="absolute top-1/2 right-2 font-serif">Press right arrow (→)<br>key to change theme</span>
+        <p class="static md:absolute bottom-2 left-2 mt-24 md:mt-0" :class="themes[currentTheme].outsideText">⌨️ built by <a href="https://github.com/teobourloglou" target="_blank" class="font-bold">@teobourloglou</a> + <span class="font-bold">@samkaf</span></p>
+        <span :class="themes[currentTheme].outsideText" class="absolute hidden lg:block top-1/2 left-2 font-serif">(←) Press left arrow<br>key to change theme</span>
+        <span :class="themes[currentTheme].outsideText" class="absolute hidden lg:block top-1/2 right-2 font-serif">Press right arrow (→)<br>key to change theme</span>
     </body>
 </html>
