@@ -173,6 +173,71 @@
                 image: 'https://cdn.custom-cursor.com/db/5731/jojo-bizzare-adventure-joseph-joestar-and-clacker-volley-pointer.png'
 
             },
+            {
+                title: 'Mob Psycho',
+                background: 'bg-violet-600',
+                primary: 'bg-slate-900',
+                secondary: 'bg-purple-950',
+                buttonBackground: 'bg-slate-700',
+                outsideText: 'text-pink-600',
+                insideText: 'text-neutral-50',
+                buttonText: 'text-neutral-50',
+                cursor: 'https://cdn.custom-cursor.com/db/11610/32/anime-mob-psycho-100-shigeo-kageyama-cursor.png',
+                image: 'https://cdn.custom-cursor.com/db/11609/32/anime-mob-psycho-100-shigeo-kageyama-pointer.png'
+
+            },
+            {
+                title: 'Demon Slayer',
+                background: 'bg-slate-500',
+                primary: 'bg-neutral-50',
+                secondary: 'bg-red-700',
+                buttonBackground: 'bg-gray-400',
+                outsideText: 'text-neutral-950',
+                insideText: 'text-neutral-950',
+                buttonText: 'text-neutral-950',
+                cursor: 'https://cdn.custom-cursor.com/db/4236/arrow2453.png',
+                image: 'https://cdn.custom-cursor.com/db/4235/arrow2453.png'
+
+            },
+            {
+                title: 'Neon Genesis Evangelion',
+                background: 'bg-violet-700',
+                primary: 'bg-lime-500',
+                secondary: 'bg-violet-400',
+                buttonBackground: 'bg-lime-600',
+                outsideText: 'text-neutral-950',
+                insideText: 'text-neutral-950',
+                buttonText: 'text-neutral-950',
+                cursor: 'https://cdn.custom-cursor.com/db/7764/evangelion-shinji-ikari-and-coffee-cursor.png',
+                image: 'https://cdn.custom-cursor.com/db/7763/evangelion-shinji-ikari-and-coffee-pointer.png'
+
+            },
+            {
+                title: 'Yu-Gi-Oh!',
+                background: 'bg-orange-200',
+                primary: 'bg-zinc-950',
+                secondary: 'bg-pink-500',
+                buttonBackground: 'bg-zinc-700',
+                outsideText: 'text-stone-500',
+                insideText: 'text-neutral-50',
+                buttonText: 'text-neutral-50',
+                cursor: 'https://cdn.custom-cursor.com/db/17462/anime-yu-gi-oh-yugi-muto-and-coulomb-cursor.png',
+                image: 'https://cdn.custom-cursor.com/db/17461/anime-yu-gi-oh-yugi-muto-and-coulomb-pointer.png'
+
+            },
+            {
+                title: 'Mashle: Magic and Muscles',
+                background: 'bg-red-900',
+                primary: 'bg-blue-950',
+                secondary: 'bg-amber-500',
+                buttonBackground: 'bg-blue-900',
+                outsideText: 'text-red-600',
+                insideText: 'text-neutral-50',
+                buttonText: 'text-neutral-50',
+                cursor: 'https://cdn.custom-cursor.com/db/17678/32/anime-mashle-mash-burnedead-and-cream-puffs-cursor.png',
+                image: 'https://cdn.custom-cursor.com/db/17677/32/anime-mashle-mash-burnedead-and-cream-puffs-pointer.png'
+
+            },
         ],
         isLeftArrow() {
             if (this.currentTheme == 0) {
@@ -366,7 +431,7 @@
                 <img :src="themes[currentTheme].cursor ? themes[currentTheme].cursor : 'https://cdn.custom-cursor.com/db/12052/32/ghibli-spirited-away-haku-and-haku-as-a-dragon-cursor.png'" class="w-8 h-8"/>
             </button>
         </div>
-        <p class="static md:absolute bottom-2 left-2 mt-24 md:mt-0" :class="themes[currentTheme].outsideText">⌨️ built by <a href="https://github.com/teobourloglou" target="_blank" class="font-bold">@teobourloglou</a> + <span class="font-bold">@samkaf</span></p>
+        <p class="static md:absolute bottom-2 left-2 mt-24 md:mt-0" :class="themes[currentTheme].outsideText">⌨️ built by <a href="https://github.com/teobourloglou" target="_blank" class="font-bold">@teobourloglou</a> + <span class="font-bold"><a href="https://github.com/SamuelKaf" target="_blank">@samkaf</a></span></p>
         <span :class="themes[currentTheme].outsideText" class="absolute hidden lg:block top-1/2 left-2 font-serif">(←) Press left arrow<br>key to change theme</span>
         <span :class="themes[currentTheme].outsideText" class="absolute hidden lg:block top-1/2 right-2 font-serif">Press right arrow (→)<br>key to change theme</span>
     </body>
