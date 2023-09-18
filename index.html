@@ -8,28 +8,10 @@
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=fredoka:400,500|gaegu:400" rel="stylesheet" />
+        <link href="./dist/output.css" rel="stylesheet">
         
-        <script src="https://cdn.tailwindcss.com"></script>
         <script src="./logic.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-        <script>
-            tailwind.config = {
-              theme: {
-                fontFamily: {
-                    sans:   ['Fredoka', 'sans-serif'],
-                    serif:  ['Gaegu', 'serif']
-                },
-                extend: {
-                  colors: {
-                    antiflash:  '#F0F0F0',
-                    delftblue:  '#213555',
-                    trueblue:   '#4F709C',
-                    flax:       '#E5D283',
-                  }
-                }
-              }
-            }
-          </script>
     </head>
     <body
         x-data="themingFunctionality"
@@ -40,6 +22,9 @@
                 isLeftArrow();
             } else if ($event.code == 'Space') {
                 isSpace();
+            } else if ($event.code == 'Escape' && infoModal) {
+                $event.preventDefault();
+                infoModal = false;
             }
         "
         x-init="init()"
@@ -49,8 +34,13 @@
     >
         <div class="flex flex-col gap-6 w-full items-center justify-center">
             <img :src="'https://cdn.custom-cursor.com/db/' + themes[currentTheme].image" class="mt-8 md:mt-0 h-20 pl-4"/>
-            <h1 :class="themes[currentTheme].outsideText" class="text-4xl md:text-5xl font-bold">Animedoro Timer</h1>
-            <div :class="themes[currentTheme].secondary" class="rounded-full aspect-square w-[90%] sm:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5 p-2 bg-trueblue">
+            <div :class="themes[currentTheme].outsideText" class="flex gap-4 justify-center items-baseline">
+                <h1 class="text-4xl md:text-5xl font-bold">Animedoro Timer</h1>
+                <span class="cursor-pointer" @click="displayModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path><path d="M12 9h.01"></path><path d="M11 12h1v4h1"></path></svg>
+                </span>
+            </div>
+            <div :class="themes[currentTheme].secondary" class="rounded-full aspect-square w-[90%] sm:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5 p-2">
                 <div :class="themes[currentTheme].primary" class="rounded-full aspect-square gap-4 md:gap-8 flex flex-col items-center justify-center transition-all duration-300">
                     <div class="flex flex-col items-center justify-center gap-2">
                             <div class="flex justify-center items-center gap-4 w-full">
@@ -119,12 +109,30 @@
             <audio id="startStudySound"><source src="./sound/study_start.wav" type="audio/wav"></audio>
             <p :class="themes[currentTheme].outsideText" class="text-2xl">It's <span x-text="isStudying ? 'studying' : themes[currentTheme].title"></span> time</p>
             <div :class="themes[currentTheme].outsideText" class="flex gap-8">
-                <div class="flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notebook" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18"></path><path d="M13 8l2 0"></path><path d="M13 12l2 0"></path></svg>
-                    <span x-text="studySessions"></span></div>
-                    <div class="flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-tv" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path><path d="M16 3l-4 4l-4 -4"></path></svg>
-                    <span x-text="animeEpisodes"></span></div>
+                <div x-data="{ tooltip: false }" class="relative z-30 inline-flex ">
+                    <div x-on:mouseover="tooltip = true" x-on:mouseleave="tooltip = false" class="flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notebook" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18"></path><path d="M13 8l2 0"></path><path d="M13 12l2 0"></path></svg>
+                    <span x-text="studySessions"></span>
+                    </div>
+                    <div class="relative" x-cloak x-show.transition.origin.top="tooltip">
+                      <div :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`" class="absolute -left-1 z-10 w-24 p-2 -mt-1 text-sm text-center leading-tight transform -translate-x-1/2 -translate-y-full rounded-lg">
+                        Sessions completed
+                      </div>
+                      <svg :class="themes[currentTheme].buttonTextSVG" class="absolute z-10 w-6 h-6 transform -translate-x-5 -translate-y-3 fill-current stroke-current" width="8" height="8"><rect x="12" y="-10" width="8" height="8" transform="rotate(45)" /></svg>
+                    </div>
+                  </div>
+                <div x-data="{ tooltip: false }" class="relative z-30 inline-flex ">
+                    <div x-on:mouseover="tooltip = true" x-on:mouseleave="tooltip = false" class="flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-tv" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path><path d="M16 3l-4 4l-4 -4"></path></svg>
+                        <span x-text="animeEpisodes"></span>
+                    </div>
+                    <div class="relative" x-cloak x-show.transition.origin.top="tooltip">
+                      <div :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`" class="absolute -left-1 z-10 w-24 p-2 -mt-1 text-sm text-center leading-tight transform -translate-x-1/2 -translate-y-full rounded-lg">
+                        Episodes watched
+                      </div>
+                      <svg :class="themes[currentTheme].buttonTextSVG" class="absolute z-10 w-6 h-6 transform -translate-x-5 -translate-y-3 fill-current stroke-current" width="8" height="8"><rect x="12" y="-10" width="8" height="8" transform="rotate(45)" /></svg>
+                    </div>
+                  </div>
             </div>
             <button @click="mobileThemeChange()" :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`" class="lg:hidden flex gap-1 items-center px-4 py-2 rounded-full">
                 Change theme
@@ -149,5 +157,50 @@
         <p class="static mb-4 md:mb-0 md:absolute bottom-2 left-2 mt-12 md:mt-0 opacity-80 hover:opacity-100 transition-opacity duration-300" :class="themes[currentTheme].outsideText">⌨️ built by <a href="https://github.com/teobourloglou" target="_blank" class="font-bold">@teobourloglou</a> + <span class="font-bold"><a href="https://github.com/SamuelKaf" target="_blank">@samkaf</a></span></p>
         <span @click="isLeftArrow()" :class="themes[currentTheme].outsideText" class="absolute hidden lg:block top-1/2 left-2 font-serif cursor-pointer opacity-80 hover:opacity-100 transition-opacity duration-300">(←) Press left arrow<br>key to change theme</span>
         <span @click="isRightArrow()" :class="themes[currentTheme].outsideText" class="absolute hidden lg:block top-1/2 right-2 font-serif cursor-pointer opacity-80 hover:opacity-100 transition-opacity duration-300">Press right arrow (→)<br>key to change theme</span>
+
+        <div
+            x-cloak
+            x-show="infoModal"
+            x-transition:enter="transition ease-out duration-300 transform opacity-0 scale-95"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-200 transform opacity-100 scale-100"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95"
+            @keyup.escape.window="infoModal = false"
+            @click.outside.="infoModal = false"
+            :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`"
+            class="absolute opacity-95 z-40 w-[95%] h-[90%] my-[5%] mx-[2.5%] rounded-xl"
+        >
+            <div class="w-full h-full relative flex justify-center overflow-scroll">
+                <span @click="infoModal = false" class="absolute right-2 top-2 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" x-cloak width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M18 6l-12 12"></path>
+                        <path d="M6 6l12 12"></path>
+                    </svg>
+                </span>
+                <div class="px-4 pt-4 md:px-8 md:pt-8 text-center">
+                    <h2 class="text-3xl">What is Animedoro?</h2>
+                    <p class="leading-5 my-4">
+                        The animedoro technique, invented by Josh Chen, is a perfect work time management for people who need more time to focus and for who love watching animes or shows.
+                        <br><br>
+                        For people who don’t know, the pomodoro technique is a simple study/work timer. It consists of 25 minutes of work and 5 minutes of break. After 4 cycles of work and break, you can do a longer break ( about 15 minutes).
+                        <br><br>
+                        The animedoro changes this technique into 40 to 60 minutes of work and 20 minutes of watching an anime or a show of your choice, ( You can do whatever you like in these 20 minutes, it just needs to be something that you enjoy doing), without a longer break after 4 cycles.
+                        <br><br>
+                        The animedoro technique lets you study for a longer period ( 40/60 minutes). This amount of time is good for people who need a lot of time to study or to complete task or to just concentrate.
+                        Also, you’ll feel more motivated to study because after the 40 minutes are gone you’ll see an episode of your favourite show or anime.
+                    </p>
+                    <iframe class="rounded-xl mx-auto w-full md:w-[640px]" width="640" height="360" src="https://www.youtube.com/embed/bUjGZJIgse0" title="How I Studied 600 hrs + Watched 300 hrs of Anime in 4 Months (The ULTIMATE Study Technique) 😲" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <h2 class="text-3xl mt-4">About this project</h2>
+                    <p class="leading-5 my-4">
+                        This project was created for fun to put my Alpine.js freshly acquired knowledge to use.<br><br>
+                        Also this was the fun project I procrastinated with instead of studying for my exams, so I hope it's worth it!<br><br>
+                        Big shoutout to <span class="font-bold"><a href="https://github.com/SamuelKaf" target="_blank">@samkaf</a></span>, who helped so much all the themes and links we had to include!
+                    </p>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
