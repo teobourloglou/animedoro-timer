@@ -6,7 +6,6 @@
         
         <title>Animedoro Timer</title>
 
-        <link rel="stylesheet" href="./app.css">
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=fredoka:400,500|gaegu:400" rel="stylesheet" />
         
@@ -17,15 +16,15 @@
             tailwind.config = {
               theme: {
                 fontFamily: {
-                    sans: ['Fredoka', 'sans-serif'],
-                    serif: ['Gaegu', 'serif']
+                    sans:   ['Fredoka', 'sans-serif'],
+                    serif:  ['Gaegu', 'serif']
                 },
                 extend: {
                   colors: {
-                    antiflash: '#F0F0F0',
-                    delftblue: '#213555',
-                    trueblue: '#4F709C',
-                    flax: '#E5D283',
+                    antiflash:  '#F0F0F0',
+                    delftblue:  '#213555',
+                    trueblue:   '#4F709C',
+                    flax:       '#E5D283',
                   }
                 }
               }
@@ -33,52 +32,47 @@
           </script>
     </head>
     <body
-    x-data="themingFunctionality"
-    x-on:keydown.window="
-        if ($event.code == 'ArrowRight') {
-            isRightArrow();
-        } else if ($event.code == 'ArrowLeft') {
-            isLeftArrow();
-        }
-    "
-    :class="themes[currentTheme].background"
-    :style="`cursor: url(${themes[currentTheme].cursor}) , default !important;`"
-    class="bg-antiflash flex flex-col md:flex-row items-center justify-center min-h-screen transition-all duration-300">
-        <div 
-            x-data="studyingFunctionality"
-            x-init="init()"
-            class="flex flex-col gap-6 w-full items-center justify-center"
-        >
-            <img :src="themes[currentTheme].image" class="mt-8 md:mt-0 h-20 pl-4"/>
+        x-data="themingFunctionality"
+        x-on:keydown.window="
+            if ($event.code == 'ArrowRight') {
+                isRightArrow();
+            } else if ($event.code == 'ArrowLeft') {
+                isLeftArrow();
+            } else if ($event.code == 'Space') {
+                isSpace();
+            }
+        "
+        x-init="init()"
+        :style="themes[currentTheme].cursor ? `cursor: url(https://cdn.custom-cursor.com/db/${themes[currentTheme].cursor}), default !important;` : ''"
+        :class="themes[currentTheme].background"
+        class="bg-antiflash flex flex-col md:flex-row items-center justify-center min-h-screen transition-all duration-300"
+    >
+        <div class="flex flex-col gap-6 w-full items-center justify-center">
+            <img :src="'https://cdn.custom-cursor.com/db/' + themes[currentTheme].image" class="mt-8 md:mt-0 h-20 pl-4"/>
             <h1 :class="themes[currentTheme].outsideText" class="text-4xl md:text-5xl font-bold">Animedoro Timer</h1>
             <div :class="themes[currentTheme].secondary" class="rounded-full aspect-square w-[90%] sm:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5 p-2 bg-trueblue">
                 <div :class="themes[currentTheme].primary" class="rounded-full aspect-square gap-4 md:gap-8 flex flex-col items-center justify-center transition-all duration-300">
                     <div class="flex flex-col items-center justify-center gap-2">
                             <div class="flex justify-center items-center gap-4 w-full">
                                 <button
-                                    x-on:click="subtractFiveMinutes()"
+                                    @click="subtractFiveMinutes()"
                                     :class="themes[currentTheme].insideText"
                                     class="flex justify-center items-center mt-2 opacity-80 hover:opacity-100 transition-opacity duration-300"
-                                    >
-                                    -5
-                                </button>
+                                >-5</button>
                                 <h2 x-text="formatTime" :class="themes[currentTheme].insideText" class="text-7xl"></h2>
                                 <button
-                                    x-on:click="addFiveMinutes()"
+                                    @click="addFiveMinutes()"
                                     :class="themes[currentTheme].insideText"
                                     class="flex justify-center items-center mt-2 opacity-80 hover:opacity-100 transition-opacity duration-300"
-                                >
-                                    +5
-                                </button>
+                                >+5</button>
                             </div>
                         <p x-show="isStudying" :class="themes[currentTheme].insideText" class="text-center text-lg">until next episode</p>
                         <p x-show="!isStudying" :class="themes[currentTheme].insideText" class="text-center text-lg">until next studying session</p>
                     </div>
-                    <div class="flex justify-between gap-4"
-                    >
+                    <div class="flex justify-between gap-4">
                         <button
                             x-show="!isRunning"
-                            x-on:click="isRunning = !isRunning; startTimer()"
+                            @click="isRunning = !isRunning; startTimer()"
                             :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`"
                             class="text-xl px-2 py-2 rounded-full flex justify-between items-center gap-2"
                         >
@@ -86,21 +80,21 @@
                         </button>
                         <button
                             x-show="isRunning"
-                            x-on:click="isRunning = !isRunning; stopTimer()"
+                            @click="isRunning = !isRunning; stopTimer()"
                             :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`"
                             class="text-xl px-2 py-2 rounded-full flex justify-between items-center gap-2"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-stop" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 5m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"></path></svg>
                         </button>
                         <button
-                            x-on:click="resetTimer()"
+                            @click="restartTimer()"
                             :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`"
                             class="text-xl px-2 py-2 rounded-full flex justify-between items-center gap-2"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path></svg>   
                         </button>
                         <button
-                            x-on:click="skipTimer()"
+                            @click="skipTimer()"
                             :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`"
                             class="text-xl px-2 py-2 rounded-full flex justify-between items-center gap-2"
                         >
@@ -124,7 +118,7 @@
             <audio id="startAnimeSound"><source src="./sound/anime_start.wav" type="audio/wav"></audio>
             <audio id="startStudySound"><source src="./sound/study_start.wav" type="audio/wav"></audio>
             <p :class="themes[currentTheme].outsideText" class="text-2xl">It's <span x-text="isStudying ? 'studying' : themes[currentTheme].title"></span> time</p>
-            <div class="flex gap-8" :class="themes[currentTheme].outsideText">
+            <div :class="themes[currentTheme].outsideText" class="flex gap-8">
                 <div class="flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notebook" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18"></path><path d="M13 8l2 0"></path><path d="M13 12l2 0"></path></svg>
                     <span x-text="studySessions"></span></div>
@@ -132,26 +126,18 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-tv" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path><path d="M16 3l-4 4l-4 -4"></path></svg>
                     <span x-text="animeEpisodes"></span></div>
             </div>
-            <button x-on:click="mobileThemeChange()" :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`" class="lg:hidden flex gap-1 items-center px-4 py-2 rounded-full">
+            <button @click="mobileThemeChange()" :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`" class="lg:hidden flex gap-1 items-center px-4 py-2 rounded-full">
                 Change theme
-                <img :src="themes[currentTheme].cursor ? themes[currentTheme].cursor : 'https://cdn.custom-cursor.com/db/12052/32/ghibli-spirited-away-haku-and-haku-as-a-dragon-cursor.png'" class="w-8 h-8"/>
+                <img :src="themes[currentTheme].cursor ? `https://cdn.custom-cursor.com/db/${themes[currentTheme].cursor}` : 'https://cdn.custom-cursor.com/db/12052/32/ghibli-spirited-away-haku-and-haku-as-a-dragon-cursor.png'" class="w-8 h-8"/>
             </button>
-            <div class="flex gap-8 text-sm" :class="themes[currentTheme].outsideText">
-                <button>Reset</button>
-                <button x-on:click="soundOn = !soundOn; console.log(soundOn)" x-text="soundOn ? 'Sound: on' : 'Sound: off'">Sound</button>
+            <div :class="themes[currentTheme].outsideText" class="flex gap-8 text-sm">
+                <button @click="resetTimer()">Reset</button>
+                <button @click="soundOn = !soundOn; console.log(soundOn)" x-text="soundOn ? 'Sound: on' : 'Sound: off'">Sound</button>
             </div>
         </div>
-        <div x-data="{
-                platforms : [
-                    ['https://www.crunchyroll.com/series/', 'bg-orange-500 text-black', 'Crunchyroll'],
-                    ['https://www.hulu.com/series/', 'bg-green-400 text-black', 'Hulu'],
-                    ['https://www.netflix.com/', 'bg-red-600 text-white', 'Netflix'],
-                    ['https://www.disneyplus.com/', 'bg-blue-800 text-white', 'Disney+'],
-                ]
-            }"
-            x-show="themes[currentTheme].url[0] || themes[currentTheme].url[1] || themes[currentTheme].url[2] || themes[currentTheme].url[3]"
-            class="static md:absolute opacity-80 hover:opacity-100 transition-opacity duration-300 flex flex-col md:flex-row items-center justify-between gap-2 bottom-2 right-2 mt-6 md:mt-0"
+        <div x-show="themes[currentTheme].url[0] || themes[currentTheme].url[1] || themes[currentTheme].url[2] || themes[currentTheme].url[3]"
             :class="themes[currentTheme].outsideText"
+            class="static md:absolute opacity-80 hover:opacity-100 transition-opacity duration-300 flex flex-col md:flex-row items-center justify-between gap-2 bottom-2 right-2 mt-6 md:mt-0"
         >
             <p>Watch on: </p>
             <div class="flex items-center justify-center gap-2">
@@ -161,7 +147,7 @@
             </div>
         </div>
         <p class="static mb-4 md:mb-0 md:absolute bottom-2 left-2 mt-12 md:mt-0 opacity-80 hover:opacity-100 transition-opacity duration-300" :class="themes[currentTheme].outsideText">⌨️ built by <a href="https://github.com/teobourloglou" target="_blank" class="font-bold">@teobourloglou</a> + <span class="font-bold"><a href="https://github.com/SamuelKaf" target="_blank">@samkaf</a></span></p>
-        <span :class="themes[currentTheme].outsideText" class="absolute hidden lg:block top-1/2 left-2 font-serif cursor-pointer opacity-80 hover:opacity-100 transition-opacity duration-300" x-on:click="isLeftArrow()">(←) Press left arrow<br>key to change theme</span>
-        <span :class="themes[currentTheme].outsideText" class="absolute hidden lg:block top-1/2 right-2 font-serif cursor-pointer opacity-80 hover:opacity-100 transition-opacity duration-300" x-on:click="isRightArrow()">Press right arrow (→)<br>key to change theme</span>
+        <span @click="isLeftArrow()" :class="themes[currentTheme].outsideText" class="absolute hidden lg:block top-1/2 left-2 font-serif cursor-pointer opacity-80 hover:opacity-100 transition-opacity duration-300">(←) Press left arrow<br>key to change theme</span>
+        <span @click="isRightArrow()" :class="themes[currentTheme].outsideText" class="absolute hidden lg:block top-1/2 right-2 font-serif cursor-pointer opacity-80 hover:opacity-100 transition-opacity duration-300">Press right arrow (→)<br>key to change theme</span>
     </body>
 </html>
