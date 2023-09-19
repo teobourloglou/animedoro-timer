@@ -42,41 +42,41 @@
         x-init="init()"
         :style="themes[currentTheme].cursor ? `cursor: url(https://cdn.custom-cursor.com/db/${themes[currentTheme].cursor}), default !important;` : ''"
         :class="themes[currentTheme].background"
-        class="bg-antiflash flex flex-col md:flex-row items-center justify-center min-h-screen transition-all duration-300"
+        class="flex flex-col items-center justify-center min-h-screen transition-all duration-300 md:flex-row"
     >
-        <div class="flex flex-col gap-6 w-full items-center justify-center">
-            <img :src="'https://cdn.custom-cursor.com/db/' + themes[currentTheme].image" class="mt-8 md:mt-0 h-20 pl-4"/>
-            <div :class="themes[currentTheme].outsideText" class="flex gap-4 justify-center items-baseline">
-                <h1 class="text-4xl md:text-5xl font-bold">Animedoro Timer</h1>
+        <div class="flex flex-col items-center justify-center w-full gap-6">
+            <img :src="'https://cdn.custom-cursor.com/db/' + themes[currentTheme].image" class="h-20 pl-4 mt-8 md:mt-0"/>
+            <div :class="themes[currentTheme].outsideText" class="flex items-baseline justify-center gap-4">
+                <h1 class="text-4xl font-bold md:text-5xl">Animedoro Timer</h1>
                 <span class="cursor-pointer" @click="displayModal()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path><path d="M12 9h.01"></path><path d="M11 12h1v4h1"></path></svg>
                 </span>
             </div>
             <div :class="themes[currentTheme].secondary" class="rounded-full aspect-square w-[90%] sm:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5 p-2">
-                <div :class="themes[currentTheme].primary" class="rounded-full aspect-square gap-4 md:gap-8 flex flex-col items-center justify-center transition-all duration-300">
+                <div :class="themes[currentTheme].primary" class="flex flex-col items-center justify-center gap-4 transition-all duration-300 rounded-full aspect-square md:gap-8">
                     <div class="flex flex-col items-center justify-center gap-2">
-                            <div class="flex justify-center items-center gap-4 w-full">
+                            <div class="flex items-baseline justify-center w-full gap-4">
                                 <button
                                     @click="subtractFiveMinutes()"
                                     :class="themes[currentTheme].insideText"
-                                    class="flex justify-center items-center mt-2 opacity-80 hover:opacity-100 transition-opacity duration-300"
+                                    class="flex items-center justify-center mt-2 transition-opacity duration-300 opacity-80 hover:opacity-100"
                                 >-5</button>
                                 <h2 x-text="formatTime" :class="themes[currentTheme].insideText" class="text-7xl"></h2>
                                 <button
                                     @click="addFiveMinutes()"
                                     :class="themes[currentTheme].insideText"
-                                    class="flex justify-center items-center mt-2 opacity-80 hover:opacity-100 transition-opacity duration-300"
+                                    class="flex items-center justify-center mt-2 transition-opacity duration-300 opacity-80 hover:opacity-100"
                                 >+5</button>
                             </div>
-                        <p x-show="isStudying" :class="themes[currentTheme].insideText" class="text-center text-lg">until next episode</p>
-                        <p x-show="!isStudying" :class="themes[currentTheme].insideText" class="text-center text-lg">until next studying session</p>
+                        <p x-show="isStudying" :class="themes[currentTheme].insideText" class="text-lg text-center">until next episode</p>
+                        <p x-show="!isStudying" :class="themes[currentTheme].insideText" class="text-lg text-center">until next studying session</p>
                     </div>
                     <div class="flex justify-between gap-4">
                         <button
                             x-show="!isRunning"
                             @click="isRunning = !isRunning; startTimer()"
                             :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`"
-                            class="text-xl px-2 py-2 rounded-full flex justify-between items-center gap-2"
+                            class="flex items-center justify-between gap-2 px-2 py-2 text-xl rounded-full"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-play" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M7 4v16l13 -8z"></path></svg>
                         </button>
@@ -84,33 +84,33 @@
                             x-show="isRunning"
                             @click="isRunning = !isRunning; stopTimer()"
                             :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`"
-                            class="text-xl px-2 py-2 rounded-full flex justify-between items-center gap-2"
+                            class="flex items-center justify-between gap-2 px-2 py-2 text-xl rounded-full"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-stop" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 5m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"></path></svg>
                         </button>
                         <button
                             @click="restartTimer()"
                             :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`"
-                            class="text-xl px-2 py-2 rounded-full flex justify-between items-center gap-2"
+                            class="flex items-center justify-between gap-2 px-2 py-2 text-xl rounded-full"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path></svg>   
                         </button>
                         <button
                             @click="skipTimer()"
                             :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`"
-                            class="text-xl px-2 py-2 rounded-full flex justify-between items-center gap-2"
+                            class="flex items-center justify-between gap-2 px-2 py-2 text-xl rounded-full"
                         >
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-skip-forward" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 5v14l12 -7z"></path><path d="M20 5l0 14"></path></svg>
                         </button>
                     </div>
-                    <div class="flex flex-col justify-center items-center gap-1">
+                    <div class="flex flex-col items-center justify-center gap-1">
                         <p :class="themes[currentTheme].insideText">Autostart:</p>
-                        <label class="flex items-center cursor-pointer gap-3">
+                        <label class="flex items-center gap-3 cursor-pointer">
                             <span :class="themes[currentTheme].insideText" class="text-sm">Off</span>
                             <div class="relative">
                                 <input type="checkbox" x-model="autostart" class="hidden" />
                                 <div :class="themes[currentTheme].secondary" class="w-8 h-4 rounded-full"></div>
-                                <div :class="`${themes[currentTheme].background} ${autostart ? 'translate-x-4' : ''}`" class="absolute w-5 bg-white h-5 rounded-full -left-0.5 -top-0.5 transition-transform transform duration-300"></div>
+                                <div :class="`${themes[currentTheme].background} ${autostart ? 'translate-x-4' : ''}`" class="absolute w-5 h-5 rounded-full -left-0.5 -top-0.5 transition-transform transform duration-300"></div>
                             </div>
                             <span :class="themes[currentTheme].insideText" class="text-sm">On</span>
                         </label>
@@ -127,7 +127,7 @@
                     <span x-text="studySessions"></span>
                     </div>
                     <div class="relative" x-cloak x-show.transition.origin.top="tooltip">
-                      <div :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`" class="absolute -left-1 z-10 w-24 p-2 -mt-1 text-sm text-center leading-tight transform -translate-x-1/2 -translate-y-full rounded-lg">
+                      <div :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`" class="absolute z-10 w-24 p-2 -mt-1 text-sm leading-tight text-center transform -translate-x-1/2 -translate-y-full rounded-lg -left-1">
                         Sessions completed
                       </div>
                       <svg :class="themes[currentTheme].buttonTextSVG" class="absolute z-10 w-6 h-6 transform -translate-x-5 -translate-y-3 fill-current stroke-current" width="8" height="8"><rect x="12" y="-10" width="8" height="8" transform="rotate(45)" /></svg>
@@ -139,14 +139,14 @@
                         <span x-text="animeEpisodes"></span>
                     </div>
                     <div class="relative" x-cloak x-show.transition.origin.top="tooltip">
-                      <div :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`" class="absolute -left-1 z-10 w-24 p-2 -mt-1 text-sm text-center leading-tight transform -translate-x-1/2 -translate-y-full rounded-lg">
+                      <div :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`" class="absolute z-10 w-24 p-2 -mt-1 text-sm leading-tight text-center transform -translate-x-1/2 -translate-y-full rounded-lg -left-1">
                         Episodes watched
                       </div>
                       <svg :class="themes[currentTheme].buttonTextSVG" class="absolute z-10 w-6 h-6 transform -translate-x-5 -translate-y-3 fill-current stroke-current" width="8" height="8"><rect x="12" y="-10" width="8" height="8" transform="rotate(45)" /></svg>
                     </div>
                   </div>
             </div>
-            <button @click="mobileThemeChange()" :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`" class="lg:hidden flex gap-1 items-center px-4 py-2 rounded-full">
+            <button @click="mobileThemeChange()" :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`" class="flex items-center gap-1 px-4 py-2 rounded-full lg:hidden">
                 Change theme
                 <img :src="themes[currentTheme].cursor ? `https://cdn.custom-cursor.com/db/${themes[currentTheme].cursor}` : 'https://cdn.custom-cursor.com/db/12052/32/ghibli-spirited-away-haku-and-haku-as-a-dragon-cursor.png'" class="w-8 h-8"/>
             </button>
@@ -157,7 +157,7 @@
         </div>
         <div x-show="themes[currentTheme].url[0] || themes[currentTheme].url[1] || themes[currentTheme].url[2] || themes[currentTheme].url[3]"
             :class="themes[currentTheme].outsideText"
-            class="static md:absolute opacity-80 hover:opacity-100 transition-opacity duration-300 flex flex-col md:flex-row items-center justify-between gap-2 bottom-2 right-2 mt-6 md:mt-0"
+            class="static flex flex-col items-center justify-between gap-2 mt-6 transition-opacity duration-300 md:absolute opacity-80 hover:opacity-100 md:flex-row bottom-2 right-2 md:mt-0"
         >
             <p>Watch on: </p>
             <div class="flex items-center justify-center gap-2">
@@ -166,9 +166,9 @@
                 </template>
             </div>
         </div>
-        <p class="static mb-4 md:mb-0 md:absolute bottom-2 left-2 mt-12 md:mt-0 opacity-80 hover:opacity-100 transition-opacity duration-300" :class="themes[currentTheme].outsideText">⌨️ built by <a href="https://github.com/teobourloglou" target="_blank" class="font-bold">@teobourloglou</a> + <span class="font-bold"><a href="https://github.com/SamuelKaf" target="_blank">@samkaf</a></span></p>
-        <span @click="isLeftArrow()" :class="themes[currentTheme].outsideText" class="absolute hidden lg:block top-1/2 left-2 font-serif cursor-pointer opacity-80 hover:opacity-100 transition-opacity duration-300">(←) Press left arrow<br>key to change theme</span>
-        <span @click="isRightArrow()" :class="themes[currentTheme].outsideText" class="absolute hidden lg:block top-1/2 right-2 font-serif cursor-pointer opacity-80 hover:opacity-100 transition-opacity duration-300">Press right arrow (→)<br>key to change theme</span>
+        <p class="static mt-12 mb-4 transition-opacity duration-300 md:mb-0 md:absolute bottom-2 left-2 md:mt-0 opacity-80 hover:opacity-100" :class="themes[currentTheme].outsideText">⌨️ built by <a href="https://github.com/teobourloglou" target="_blank" class="font-bold">@teobourloglou</a> + <span class="font-bold"><a href="https://github.com/SamuelKaf" target="_blank">@samkaf</a></span></p>
+        <span @click="isLeftArrow()" :class="themes[currentTheme].outsideText" class="absolute hidden font-serif transition-opacity duration-300 cursor-pointer lg:block top-1/2 left-2 opacity-80 hover:opacity-100">(←) Press left arrow<br>key to change theme</span>
+        <span @click="isRightArrow()" :class="themes[currentTheme].outsideText" class="absolute hidden font-serif transition-opacity duration-300 cursor-pointer lg:block top-1/2 right-2 opacity-80 hover:opacity-100">Press right arrow (→)<br>key to change theme</span>
 
         <div
             x-cloak
@@ -184,18 +184,18 @@
             :class="`${themes[currentTheme].buttonText} ${themes[currentTheme].buttonBackground}`"
             class="absolute opacity-95 z-40 w-[95%] h-[90%] my-[5%] mx-[2.5%] rounded-xl"
         >
-            <div class="w-full h-full relative flex justify-center overflow-scroll">
-                <span @click="infoModal = false" class="absolute right-2 top-2 cursor-pointer">
+            <div class="relative flex justify-center w-full h-full overflow-scroll">
+                <span @click="infoModal = false" class="absolute cursor-pointer right-2 top-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" x-cloak width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                         <path d="M18 6l-12 12"></path>
                         <path d="M6 6l12 12"></path>
                     </svg>
                 </span>
-                <div class="px-4 pt-4 md:px-8 md:pt-8 text-center">
+                <div class="px-4 pt-4 text-center md:px-8 md:pt-8">
                     <h2 class="text-3xl">What is Animedoro?</h2>
-                    <p class="leading-5 my-4">
-                        The animedoro technique, invented by Josh Chen, is a perfect work time management for people who need more time to focus and for who love watching animes or shows.
+                    <p class="my-4 leading-5">
+                        The animedoro technique, invented by Josh Chen, is a perfect work time management for people who need more time to focus and love watching animes or shows.
                         <br><br>
                         For people who don’t know, the pomodoro technique is a simple study/work timer. It consists of 25 minutes of work and 5 minutes of break. After 4 cycles of work and break, you can do a longer break ( about 15 minutes).
                         <br><br>
@@ -205,11 +205,11 @@
                         Also, you’ll feel more motivated to study because after the 40 minutes are gone you’ll see an episode of your favourite show or anime.
                     </p>
                     <iframe class="rounded-xl mx-auto w-full md:w-[640px]" width="640" height="360" src="https://www.youtube.com/embed/bUjGZJIgse0" title="How I Studied 600 hrs + Watched 300 hrs of Anime in 4 Months (The ULTIMATE Study Technique) 😲" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                    <h2 class="text-3xl mt-4">About this project</h2>
-                    <p class="leading-5 my-4">
+                    <h2 class="mt-4 text-3xl">About this project</h2>
+                    <p class="my-4 leading-5">
                         This project was created for fun to put my Alpine.js freshly acquired knowledge to use.<br><br>
                         Also this was the fun project I procrastinated with instead of studying for my exams, so I hope it's worth it!<br><br>
-                        Big shoutout to <span class="font-bold"><a href="https://github.com/SamuelKaf" target="_blank">@samkaf</a></span>, who helped so much all the themes and links we had to include!
+                        Big shoutout to <span class="font-bold"><a href="https://github.com/SamuelKaf" target="_blank">@samkaf</a></span>, who helped so much with all the themes and links we had to include!
                     </p>
                 </div>
             </div>
