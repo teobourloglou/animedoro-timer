@@ -1,7 +1,7 @@
 # 👺⏲️ Animedoro Timer
 ## Work or Watch? Why Choose
 
-**Animedoro Timer** is a quirky, time-bending technique that lets you combine your heroic work efforts with epic anime adventures. put Alpine.js knowledge into practice and sprinkle some nerdy fun into your productivity.
+**Animedoro Timer** is a quirky, time-bending technique that lets you combine your heroic work efforts with epic anime adventures.
 
 ![Light Yagami writing names](https://media.giphy.com/media/H9GdRg90WerxC/giphy.gif)
 
